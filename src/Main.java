@@ -22,8 +22,8 @@ import java.util.Random;
             static void start(){
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
                 System.out.println("was würden sie gerne tun?\n c=cäsar\n v=Vigenere \n b=bit-Verschlüsselung\n d=diffe-hellmann\n\n x=Programm beenden\n");
-                String verschlüsselungWahl = StringScanner.nextLine(); //input fuer Aktion
-                switch(verschlüsselungWahl) {
+                String verschluesselungWahl = StringScanner.nextLine(); //input fuer Aktion
+                switch(verschluesselungWahl) {
                     case "c":
                         caesarStart();
                         break;
@@ -380,7 +380,7 @@ import java.util.Random;
                 int[] passwortIntArr = new int[passwortByteArr.length];
                 int[] chiffreIntArr = new int[klarTextByteArr.length];
                 byte[] chiffreByteArr = new byte[klarTextByteArr.length];
-                boolean zeichenGültigkeit  = true;
+                boolean zeichenGueltigkeit  = true;
                 for (int i = 0; i<klarTextByteArr.length; i++) {
                     klarTextIntArr[i] = klarTextByteArr[i];
                     passwortIntArr[i] = passwortByteArr[i];
@@ -388,10 +388,10 @@ import java.util.Random;
                     chiffreByteArr[i] = (byte)chiffreIntArr[i];
                     if(chiffreByteArr[i] == 0){
                         chiffreByteArr[i] = 33;
-                        zeichenGültigkeit = false;
+                        zeichenGueltigkeit = false;
                     }
                 }
-                if (!zeichenGültigkeit){
+                if (!zeichenGueltigkeit){
                     System.out.println("ein oder mehrere Zeichen können nicht korrekt verschlüsselt werden und wurden durch '!' ersetzt");
                 }
                 System.out.println(new String(chiffreByteArr, charset));
