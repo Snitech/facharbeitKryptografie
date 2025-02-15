@@ -5,11 +5,11 @@ import java.util.Scanner;
 import java.util.Random;
 
         public class Main{
+            static Scanner StringScanner = new Scanner(System.in);
+            static Scanner intScanner = new Scanner(System.in);
             //erstellt Alphabet variable als Array(bereits gefuellt) und als Arraylist
             public static char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
             public static ArrayList <Character> alphabetList = new ArrayList<>();
-            //erstellt scanner fuer die Auswahl der aktionen
-            public static Scanner aktionScanner = new Scanner(System.in);
 
             public static void main(String[] args) {
                 //fuellt Alphabet Arraylist mit allen Buchstaben, zum einfacheren durchsuchen
@@ -22,7 +22,7 @@ import java.util.Random;
             static void start(){
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
                 System.out.println("was würden sie gerne tun?\n c=cäsar\n v=Vigenere \n b=bit-Verschlüsselung\n d=diffe-hellmann\n\n x=Programm beenden\n");
-                String verschlüsselungWahl = aktionScanner.nextLine(); //input fuer Aktion
+                String verschlüsselungWahl = StringScanner.nextLine(); //input fuer Aktion
                 switch(verschlüsselungWahl) {
                     case "c":
                         caesarStart();
@@ -37,7 +37,8 @@ import java.util.Random;
                         diffieHellmann();
                         break;
                     case "x":
-                        aktionScanner.close();
+                        StringScanner.close();
+                        intScanner.close();
                         System.out.print("Programm erfolgreich beendet");
                         System.exit(0);
                     default://wenn die Eingabe nicht mit einer Option uebereinstimmt
@@ -50,7 +51,7 @@ import java.util.Random;
             static void caesarStart() {
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
                 System.out.println("was würden sie gerne tun?\n v=verschlüsseln\n e=entschlüsseln \n b=brute-force Angriff\n\n x=Programm beenden\n");
-                String aktion = aktionScanner.nextLine();
+                String aktion = StringScanner.nextLine();
                 switch(aktion) {
                     case "v":
                         caeserchiffrieren();
@@ -75,7 +76,7 @@ import java.util.Random;
                 //Abfrage nach gewuenscher Aktion(vigenere Verschluesselung)
                 System.out.println("vigenere-Verschlüsselung");
                 System.out.println("was würden sie gerne tun?\n v=verschlüsseln\n e=entschlüsseln \n\n x=Programm beenden\n");
-                String aktion = aktionScanner.nextLine();
+                String aktion = StringScanner.nextLine();
                 switch(aktion) {
                     case "v":
                         vigenereChiffrieren();
@@ -95,19 +96,16 @@ import java.util.Random;
             }
 
             static void caeserchiffrieren(){
-                //erstellt scanner
-                Scanner scanner = new Scanner(System.in);
-
                 //legt variablen fest
                 char[] klarTextArray;
                 int caeserNum;
                 ArrayList <Character> chiffreList = new ArrayList<>();
 
                 System.out.println("geben sie den zu verschlüsselnden Text ein");
-                klarTextArray = textInput(scanner);
+                klarTextArray = textInput();
                 //fragt nach der Caeser Zahl und speichert sie als integer
                 System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
-                caeserNum = Math.abs(scanner.nextInt());
+                caeserNum = Math.abs(intScanner.nextInt());
 
                 //verschluesselt den text
                 for(char c : klarTextArray) {
@@ -135,8 +133,8 @@ import java.util.Random;
 
 
             }
-            static char[] textInput(Scanner scanner) {		//fragt nach String input und wandelt in char array um
-                String klarText = scanner.nextLine().toLowerCase();
+            static char[] textInput() {		//fragt nach String input und wandelt in char array um
+                String klarText = StringScanner.nextLine().toLowerCase();
                 if(klarText.contains(" ")) {
                     System.out.println("alle Leerzeichen wurden entfernt");
                 }
@@ -145,18 +143,16 @@ import java.util.Random;
                 return klarTextArray;
             }
             static void caeserdechiffrieren() {
-                //erstellt scanner
-                Scanner scanner = new Scanner(System.in);
                 //legt variablen fest
                 char[] chiffreArray;
                 int caeserNum;
                 ArrayList <Character> chiffreList = new ArrayList<>();
 
 
-                chiffreArray = chiffre(scanner);
+                chiffreArray = chiffre();
                 //fragt nach der Caeser Zahl und speichert sie als integer
                 System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
-                caeserNum = Math.abs(scanner.nextInt());
+                caeserNum = Math.abs(intScanner.nextInt());
 
                 //verschluesselt den text
                 for(char c : chiffreArray) {
@@ -186,10 +182,10 @@ import java.util.Random;
                 System.out.println(klarText);
 
             }
-            static char[] chiffre(Scanner scanner) {
+            static char[] chiffre() {
                 //fragt nach dem text, welcher verschluesselt werden soll und speichert es zuerst als String und anschliessend als array von zeichen
                 System.out.println("geben sie den zu entschlüsselnden Text ein: ");
-                String chiffre = scanner.nextLine().toLowerCase();
+                String chiffre = StringScanner.nextLine().toLowerCase();
                 if(chiffre.contains(" ")) {
                     System.out.println("alle Leerzeichen wurden entfernt");
                 }
@@ -198,15 +194,12 @@ import java.util.Random;
                 return chiffreArray;
             }
             static void bruteForce() {
-                //erstellt scanner
-                Scanner scanner = new Scanner(System.in);
-
                 //legt variablen fest
                 char[] chiffreArray;
                 ArrayList <Character> klarTextList = new ArrayList<>();
 
                 System.out.println("den zu entschluesselnden Text ein");
-                String chiffre = scanner.nextLine();
+                String chiffre = StringScanner.nextLine();
                 System.out.println("---------------------------------");
                 chiffreArray = chiffre.toCharArray();
                 for(int i=0; i<alphabet.length; i++ ) {
@@ -234,25 +227,23 @@ import java.util.Random;
                     System.out.println(i + ". "+ klarText);
                 }
 
-                //chiffreArray = klarText(scanner);
             }
 
             static void vigenereChiffrieren(){
-                Scanner scanner = new Scanner(System.in);
                 char[] klarTextArray;
                 char[] passwort;
                 char[] passwortArray;
                 String oneTimePadAuswahl;
 
                 System.out.println("mit eigenem Passwort verschlüsseln, drück x");
-                System.out.println("mit pseudozufällige generierten one-time-pad verschlüsseln, drück o");
-                oneTimePadAuswahl = scanner.nextLine();
+                System.out.println("mit pseudozufällig generierten one-time-pad verschlüsseln, drück o");
+                oneTimePadAuswahl = StringScanner.nextLine();
                 if(!oneTimePadAuswahl.equals("o")) {
                     System.out.println("geben sie den zu verschlüsselnden Text ein");
-                    klarTextArray = textInput(scanner);
+                    klarTextArray = textInput();
                     char[] chiffreArray = new char[klarTextArray.length];
                     System.out.println("mit welchem Passwort wollen sie den Text verschlüsseln?");
-                    passwort = textInput(scanner);
+                    passwort = textInput();
                     if(passwort.length >= klarTextArray.length){
                         passwortArray = passwort;
                     }
@@ -273,7 +264,7 @@ import java.util.Random;
                 else {
                     Random random = new Random();
                     System.out.println("geben sie den zu verschlüsselnden Text ein");
-                    klarTextArray = textInput(scanner);
+                    klarTextArray = textInput();
                     char[] chiffreArray = new char[klarTextArray.length];
                     char[] oneTimePadArr = new char[klarTextArray.length];
                     for(int i =0; i < klarTextArray.length; i++) {
@@ -296,16 +287,15 @@ import java.util.Random;
 
             }
             static void vigenereDechiffrieren(){
-                Scanner scanner = new Scanner(System.in);
                 char[] chiffreArray;
                 char[] passwort;
                 char[] passwortArray;
 
                 System.out.println("geben sie den zu entschlüsselnden Text ein");
-                chiffreArray = textInput(scanner);
+                chiffreArray = textInput();
                 char[] klarTextArray = new char[chiffreArray.length];
                 System.out.println("mit welchem Passwort wollen sie den Text entschlüsseln?:");
-                passwort = textInput(scanner);
+                passwort = textInput();
                 if(passwort.length >= chiffreArray.length){
                     passwortArray = passwort;
                 }
@@ -327,7 +317,7 @@ import java.util.Random;
             static void bitStart(){
                 System.out.println("bit-Verschlüsselung");
                 System.out.println("was würden sie gerne tun?\n v=verschlüssel/entschlüsseln \n\n x=Programm beenden\n");
-                String aktion = aktionScanner.nextLine();
+                String aktion = StringScanner.nextLine();
                 switch(aktion) {
                     case "v":
                         bitChiffrieren();
@@ -344,9 +334,8 @@ import java.util.Random;
             }
             static void bitChiffrieren(){
                 Charset charset = null;
-                Scanner aktionScanner = new Scanner(System.in);
                 System.out.println("welchen Zeichensatz würden sie gerne verwenden?\n u=UTF-8 \n a=ASCII\n i=ISO 8859-1\n\n x=Programm beenden\n");
-                String aktion = aktionScanner.nextLine();
+                String aktion = StringScanner.nextLine();
                 switch(aktion) {
                     case "u":
                         charset = StandardCharsets.UTF_8;
@@ -362,14 +351,13 @@ import java.util.Random;
                         break;
                 }
                 System.out.print("\n");
-                Scanner scanner = new Scanner(System.in);
 
                 char[] klarTextArray;
                 char[] passwortArray;
                 System.out.println("geben sie den zu verschlüsselnden/entschlüsselnden Text ein: ");
-                klarTextArray = textInput(scanner);
+                klarTextArray = textInput();
                 System.out.println("geben sie das gewünschte Passwort ein: ");
-                passwortArray = textInput(scanner);
+                passwortArray = textInput();
                 String klarTextString = new String(klarTextArray);
                 String passwortString = null;
                 if(passwortArray.length >= klarTextArray.length){ //prüft, ob Passwort gleich lang oder länger als klarText ist
@@ -392,30 +380,31 @@ import java.util.Random;
                 int[] passwortIntArr = new int[passwortByteArr.length];
                 int[] chiffreIntArr = new int[klarTextByteArr.length];
                 byte[] chiffreByteArr = new byte[klarTextByteArr.length];
-
+                boolean zeichenGültigkeit  = true;
                 for (int i = 0; i<klarTextByteArr.length; i++) {
                     klarTextIntArr[i] = klarTextByteArr[i];
                     passwortIntArr[i] = passwortByteArr[i];
                     chiffreIntArr[i] = klarTextIntArr[i]^passwortIntArr[i];
-                    if(chiffreIntArr[i] != 0) {
-                        chiffreByteArr[i] = (byte)chiffreIntArr[i];
+                    chiffreByteArr[i] = (byte)chiffreIntArr[i];
+                    if(chiffreByteArr[i] == 0){
+                        chiffreByteArr[i] = 33;
+                        zeichenGültigkeit = false;
                     }
-                    else {
-                        chiffreByteArr[i] = 45;
-                    }
+                }
+                if (!zeichenGültigkeit){
+                    System.out.println("ein oder mehrere Zeichen können nicht korrekt verschlüsselt werden und wurden durch '!' ersetzt");
                 }
                 System.out.println(new String(chiffreByteArr, charset));
                 System.out.println("bis hier kopieren");
             }
             static void diffieHellmann() {
-                Scanner scanner = new Scanner(System.in);
                 System.out.println("Diffie-Hellmann Schlüsselaustausch mit Y^x(mod P)");
                 System.out.print("geben sie den Wert für Y ein, Y= " );
-                int Y = scanner.nextInt();
+                int Y = intScanner.nextInt();
                 System.out.print("geben sie den Wert für x ein, x= " );
-                int x = scanner.nextInt();
+                int x = intScanner.nextInt();
                 System.out.print("geben sie den Wert für P ein, P= " );
-                int P = scanner.nextInt();
+                int P = intScanner.nextInt();
                 double produkt = Math.pow(Y, x);
                 System.out.println(produkt%P);
                 start();
