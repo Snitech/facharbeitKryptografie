@@ -102,7 +102,7 @@ import java.util.Random;
                 ArrayList <Character> chiffreList = new ArrayList<>();
 
                 System.out.println("geben sie den zu verschlüsselnden Text ein");
-                klarTextArray = textInput();
+                klarTextArray = StringZuArrayInput();
                 //fragt nach der Caeser Zahl und speichert sie als integer
                 System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
                 caeserNum = Math.abs(intScanner.nextInt());
@@ -116,7 +116,7 @@ import java.util.Random;
                         char e = alphabetList.get(index % alphabet.length); //verschluesseltes Zeichen
                         chiffreList.add(e);//fuegt verschluesseltes Zeichen hinzu
                     }
-                    //teilt nutzer mit, dass zeichen c nicht gültig ist und beendet Programm
+                    //teilt nutzer mit, dass zeichen c nicht gültig ist
                     else {
                         System.out.printf("'%c' kann nicht verschluesselt werden \n", c);
                         chiffreList.add(c);
@@ -127,20 +127,16 @@ import java.util.Random;
                 for(int i = 0; i < klarTextArray.length; i++) {
                     chiffreArray[i] = chiffreList.get(i);
                 }
-                //wandelt array in String um
-                String chiffre = new String(chiffreArray);
-                System.out.println("\n"+chiffre);
+                System.out.println(chiffreArray);
 
 
             }
-            static char[] textInput() {		//fragt nach String input und wandelt in char array um
+            static char[] StringZuArrayInput() {		//fragt nach String input und wandelt in char array um
                 String klarText = StringScanner.nextLine().toLowerCase();
                 if(klarText.contains(" ")) {
                     System.out.println("alle Leerzeichen wurden entfernt");
                 }
-                klarText = klarText.replaceAll(" ", "");
-                char[] klarTextArray = klarText.toCharArray();
-                return klarTextArray;
+                return klarText.toCharArray();
             }
             static void caeserdechiffrieren() {
                 //legt variablen fest
@@ -148,8 +144,8 @@ import java.util.Random;
                 int caeserNum;
                 ArrayList <Character> chiffreList = new ArrayList<>();
 
-
-                chiffreArray = chiffre();
+                System.out.println("Geben sie den zu entschluesselnden Test ein");
+                chiffreArray = StringZuArrayInput();
                 //fragt nach der Caeser Zahl und speichert sie als integer
                 System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
                 caeserNum = Math.abs(intScanner.nextInt());
@@ -181,17 +177,6 @@ import java.util.Random;
                 String klarText = new String(klarTextArray);
                 System.out.println(klarText);
 
-            }
-            static char[] chiffre() {
-                //fragt nach dem text, welcher verschluesselt werden soll und speichert es zuerst als String und anschliessend als array von zeichen
-                System.out.println("geben sie den zu entschlüsselnden Text ein: ");
-                String chiffre = StringScanner.nextLine().toLowerCase();
-                if(chiffre.contains(" ")) {
-                    System.out.println("alle Leerzeichen wurden entfernt");
-                }
-                chiffre = chiffre.replaceAll(" ", "");
-                char[] chiffreArray = chiffre.toCharArray();
-                return chiffreArray;
             }
             static void bruteForce() {
                 //legt variablen fest
@@ -240,10 +225,10 @@ import java.util.Random;
                 oneTimePadAuswahl = StringScanner.nextLine();
                 if(!oneTimePadAuswahl.equals("o")) {
                     System.out.println("geben sie den zu verschlüsselnden Text ein");
-                    klarTextArray = textInput();
+                    klarTextArray = StringZuArrayInput();
                     char[] chiffreArray = new char[klarTextArray.length];
                     System.out.println("mit welchem Passwort wollen sie den Text verschlüsseln?");
-                    passwort = textInput();
+                    passwort = StringZuArrayInput();
                     if(passwort.length >= klarTextArray.length){
                         passwortArray = passwort;
                     }
@@ -264,7 +249,7 @@ import java.util.Random;
                 else {
                     Random random = new Random();
                     System.out.println("geben sie den zu verschlüsselnden Text ein");
-                    klarTextArray = textInput();
+                    klarTextArray = StringZuArrayInput();
                     char[] chiffreArray = new char[klarTextArray.length];
                     char[] oneTimePadArr = new char[klarTextArray.length];
                     for(int i =0; i < klarTextArray.length; i++) {
@@ -292,10 +277,10 @@ import java.util.Random;
                 char[] passwortArray;
 
                 System.out.println("geben sie den zu entschlüsselnden Text ein");
-                chiffreArray = textInput();
+                chiffreArray = StringZuArrayInput();
                 char[] klarTextArray = new char[chiffreArray.length];
                 System.out.println("mit welchem Passwort wollen sie den Text entschlüsseln?:");
-                passwort = textInput();
+                passwort = StringZuArrayInput();
                 if(passwort.length >= chiffreArray.length){
                     passwortArray = passwort;
                 }
@@ -355,9 +340,9 @@ import java.util.Random;
                 char[] klarTextArray;
                 char[] passwortArray;
                 System.out.println("geben sie den zu verschlüsselnden/entschlüsselnden Text ein: ");
-                klarTextArray = textInput();
+                klarTextArray = StringZuArrayInput();
                 System.out.println("geben sie das gewünschte Passwort ein: ");
-                passwortArray = textInput();
+                passwortArray = StringZuArrayInput();
                 String klarTextString = new String(klarTextArray);
                 String passwortString = null;
                 if(passwortArray.length >= klarTextArray.length){ //prüft, ob Passwort gleich lang oder länger als klarText ist
