@@ -1,3 +1,4 @@
+import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
@@ -7,8 +8,10 @@ import java.util.Random;
         public class Main{
             static Scanner StringScanner = new Scanner(System.in);
             static Scanner intScanner = new Scanner(System.in);
+            static Scanner longScanner =new Scanner(System.in);
             //erstellt Alphabet variable als Array(bereits gefuellt) und als Arraylist
             public static char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
+            public static char[] morseCode = {};
             public static ArrayList <Character> alphabetList = new ArrayList<>();
 
             public static void main(String[] args) {
@@ -21,7 +24,7 @@ import java.util.Random;
             }
             static void start(){
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
-                System.out.println("was würden sie gerne tun?\n c=cäsar\n v=Vigenere \n b=bit-Verschlüsselung\n d=diffe-hellmann\n\n x=Programm beenden\n");
+                System.out.println("was würden sie gerne tun?\n c=cäsar\n v=Vigenere \n b=bit-Verschlüsselung\n d=diffe-hellmann\n m=morse code\n\n x=Programm beenden\n");
                 String verschluesselungWahl = StringScanner.nextLine(); //input fuer Aktion
                 switch(verschluesselungWahl) {
                     case "c":
@@ -36,6 +39,8 @@ import java.util.Random;
                     case "d":
                         diffieHellmann();
                         break;
+                    case "m":
+                        break;
                     case "x":
                         StringScanner.close();
                         intScanner.close();
@@ -47,6 +52,21 @@ import java.util.Random;
                         break;
                 }
                 System.out.print("\n"); //fuegt neue Zeile zur besseren Uebersicht ein
+            }
+            static char[] StringZuArrayInput() {		//fragt nach String input und wandelt in char array um
+                String klarText = StringScanner.nextLine().toLowerCase();
+                if(klarText.contains(" ")) {
+                    System.out.println("alle Leerzeichen wurden entfernt");
+                }
+                return klarText.toCharArray();
+            }
+            static int indexInAlphabet(char c){
+                for(int i = 0; i<alphabet.length; i++){
+                    if (c == alphabet[i]) {
+                        return i;
+                    }
+                }
+                return alphabet.length + 1;
             }
             static void caesarStart() {
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
@@ -72,6 +92,89 @@ import java.util.Random;
                 System.out.print("\n");
                 caesarStart();
             }
+            static void caeserchiffrieren(){
+                //legt variablen fest
+                char[] klarTextArray;
+                int caeserNum;
+
+                System.out.println("geben sie den zu verschlüsselnden Text ein");
+                klarTextArray = StringZuArrayInput();
+                char[] chiffreArr = new char[klarTextArray.length];
+                //fragt nach der Caeser Zahl und speichert sie als integer
+                System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
+                caeserNum = Math.abs(intScanner.nextInt());
+
+                //verschluesselt den text
+                for(int i =0; i< klarTextArray.length;i++) {
+                    int klartextIndex = indexInAlphabet(klarTextArray[i]);
+                    if (klartextIndex != alphabet.length+1){
+                        int chiffreIndex = (klartextIndex + caeserNum) % alphabet.length;
+                        chiffreArr[i] = alphabet[chiffreIndex];
+                    }
+                    else {
+                        chiffreArr[i] = klarTextArray[i];
+                    }
+                }
+                System.out.println(chiffreArr);
+            }
+            static void caeserdechiffrieren() {
+                //legt variablen fest
+                char[] chiffreArr;
+                int caeserNum;
+
+                System.out.println("geben sie den zu entschlüsselnden Text ein");
+                chiffreArr = StringZuArrayInput();
+                char[] klarTextArr = new char[chiffreArr.length];
+                //fragt nach der Caeser Zahl und speichert sie als integer
+                System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
+                caeserNum = Math.abs(intScanner.nextInt());
+
+                //verschluesselt den text
+                for(int i =0; i< chiffreArr.length;i++) {
+                    int chiffreIndex = indexInAlphabet(chiffreArr[i]);
+                    if (chiffreIndex != alphabet.length+1){
+                        int klartextIndex = (chiffreIndex - caeserNum) % alphabet.length;
+                        while (klartextIndex<0){
+                            klartextIndex += alphabet.length;
+                        }
+                        klarTextArr[i] = alphabet[klartextIndex];
+                    }
+                    else{
+                        klarTextArr[i] = chiffreArr[i];
+                    }
+
+                }
+                System.out.println(klarTextArr);
+
+            }
+            static void bruteForce() {
+                //legt variablen fest
+                char[] chiffreArr;
+                System.out.println("geben sie den zu entschluesselnden Text ein");
+                chiffreArr = StringZuArrayInput();
+                char[] klarTextArr = new char[chiffreArr.length];
+                System.out.println();
+                for(int i=0; i<alphabet.length; i++ ) {
+                    for(int j =0; j< chiffreArr.length;j++) {
+                        int chiffreIndex = indexInAlphabet(chiffreArr[j]);
+                        if (chiffreIndex != alphabet.length+1){
+                            int klartextIndex = (chiffreIndex - i) % alphabet.length;
+                            while (klartextIndex<0){
+                                klartextIndex += alphabet.length;
+                            }
+                            klarTextArr[j] = alphabet[klartextIndex];
+                        }
+                        else{
+                            klarTextArr[j] = chiffreArr[j];
+                        }
+
+                    }
+                    System.out.println(i+". " + new String(klarTextArr));
+                    }
+
+
+            }
+
             static void vigenereStart(){
                 //Abfrage nach gewuenscher Aktion(vigenere Verschluesselung)
                 System.out.println("vigenere-Verschlüsselung");
@@ -94,126 +197,6 @@ import java.util.Random;
                 System.out.print("\n");
                 vigenereStart();
             }
-
-            static void caeserchiffrieren(){
-                //legt variablen fest
-                char[] klarTextArray;
-                int caeserNum;
-                ArrayList <Character> chiffreList = new ArrayList<>();
-
-                System.out.println("geben sie den zu verschlüsselnden Text ein");
-                klarTextArray = StringZuArrayInput();
-                //fragt nach der Caeser Zahl und speichert sie als integer
-                System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
-                caeserNum = Math.abs(intScanner.nextInt());
-
-                //verschluesselt den text
-                for(char c : klarTextArray) {
-                    //überprüft ob zeichen c gültig ist
-                    if (alphabetList.contains(c)) {
-                        int index = (alphabetList.indexOf(c)+caeserNum) % alphabet.length; //findet den Index des verschluesselten zeichens in alphabet[]
-                        //System.out.println(index);
-                        char e = alphabetList.get(index % alphabet.length); //verschluesseltes Zeichen
-                        chiffreList.add(e);//fuegt verschluesseltes Zeichen hinzu
-                    }
-                    //teilt nutzer mit, dass zeichen c nicht gültig ist
-                    else {
-                        System.out.printf("'%c' kann nicht verschluesselt werden \n", c);
-                        chiffreList.add(c);
-                    }
-                }
-                //wandelt arraylist in array um
-                char[] chiffreArray = new char[klarTextArray.length];
-                for(int i = 0; i < klarTextArray.length; i++) {
-                    chiffreArray[i] = chiffreList.get(i);
-                }
-                System.out.println(chiffreArray);
-
-
-            }
-            static char[] StringZuArrayInput() {		//fragt nach String input und wandelt in char array um
-                String klarText = StringScanner.nextLine().toLowerCase();
-                if(klarText.contains(" ")) {
-                    System.out.println("alle Leerzeichen wurden entfernt");
-                }
-                return klarText.toCharArray();
-            }
-            static void caeserdechiffrieren() {
-                //legt variablen fest
-                char[] chiffreArray;
-                int caeserNum;
-                ArrayList <Character> chiffreList = new ArrayList<>();
-
-                System.out.println("Geben sie den zu entschluesselnden Test ein");
-                chiffreArray = StringZuArrayInput();
-                //fragt nach der Caeser Zahl und speichert sie als integer
-                System.out.println("geben sie die gewünschte Caesar Zahl ein: ");
-                caeserNum = Math.abs(intScanner.nextInt());
-
-                //verschluesselt den text
-                for(char c : chiffreArray) {
-                    //überprüft ob zeichen c gültig ist
-                    if (alphabetList.contains(c)) {
-                        int index = (alphabetList.indexOf(c)-caeserNum) % alphabet.length; //berechnet den Index des verschluesselten zeichens in alphabet[]
-                        while (index<0) {
-                            index +=alphabet.length;
-                        }
-                        //System.out.println(index);
-                        char e = alphabetList.get(index % alphabet.length); //verschluesseltes Zeichen
-                        chiffreList.add(e);//fuegt verschluesseltes Zeichen hinzu
-                    }
-                    //teilt nutzer mit, dass zeichen c nicht gültig ist und beendet Programm
-                    else {
-                        System.out.printf("'%c' kann nicht entschluesselt werden \n", c);
-                        chiffreList.add(c);
-                    }
-                }
-                //wandelt arraylist in array um
-                char[] klarTextArray = new char[chiffreArray.length];
-                for(int i = 0; i < chiffreArray.length; i++) {
-                    klarTextArray[i] = chiffreList.get(i);
-                }
-                //wandelt array in String um
-                String klarText = new String(klarTextArray);
-                System.out.println(klarText);
-
-            }
-            static void bruteForce() {
-                //legt variablen fest
-                char[] chiffreArray;
-                ArrayList <Character> klarTextList = new ArrayList<>();
-
-                System.out.println("den zu entschluesselnden Text ein");
-                String chiffre = StringScanner.nextLine();
-                System.out.println("---------------------------------");
-                chiffreArray = chiffre.toCharArray();
-                for(int i=0; i<alphabet.length; i++ ) {
-                    klarTextList.clear();
-                    for(char c : chiffreArray) {
-                        if (alphabetList.contains(c)) {
-                            int index = (alphabetList.indexOf(c)-i) % alphabet.length; //berechnet den Index des verschluesselten zeichens in alphabet[]
-                            while (index<0) {
-                                index+=alphabet.length;
-                            }
-                            char e = alphabetList.get(index % alphabet.length);
-                            klarTextList.add(e);
-                        }
-                        else {
-                            klarTextList.add(c);
-                        }
-                    }
-                    //wandelt arraylist in array um
-                    char[] klarTextArray = new char[klarTextList.size()];
-                    for(int k = 0; k < klarTextList.size(); k++) {
-                        klarTextArray[k] = klarTextList.get(k);
-                    }
-                    //wandelt array in String umx
-                    String klarText = new String(klarTextArray);
-                    System.out.println(i + ". "+ klarText);
-                }
-
-            }
-
             static void vigenereChiffrieren(){
                 char[] klarTextArray;
                 char[] passwort;
@@ -389,10 +372,15 @@ import java.util.Random;
                 System.out.print("geben sie den Wert für x ein, x= " );
                 int x = intScanner.nextInt();
                 System.out.print("geben sie den Wert für P ein, P= " );
-                int P = intScanner.nextInt();
-                double produkt = Math.pow(Y, x);
-                System.out.println(produkt%P);
+                long P = longScanner.nextLong();
+                BigInteger potenzwert = new BigInteger(String.valueOf(Math.pow(2147483647, 2)));
+                System.out.println(potenzwert);
+                System.out.println(potenzwert.mod(new BigInteger(String.valueOf(P))));
                 start();
             }
+            static void morseCode(){
+
+            }
+
         }
 
