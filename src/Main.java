@@ -1,7 +1,6 @@
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
-import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.Random;
 
@@ -9,16 +8,10 @@ import java.util.Random;
             static Scanner StringScanner = new Scanner(System.in);
             static Scanner intScanner = new Scanner(System.in);
             static Scanner longScanner =new Scanner(System.in);
-            //erstellt Alphabet variable als Array(bereits gefuellt) und als Arraylist
             public static char[] alphabet = {'a','b','c','d','e','f','g','h','i','j','k','l','m','n','o','p','q','r','s','t','u','v','w','x','y','z'};
             public static char[] morseCode = {};
-            public static ArrayList <Character> alphabetList = new ArrayList<>();
 
             public static void main(String[] args) {
-                //fuellt Alphabet Arraylist mit allen Buchstaben, zum einfacheren durchsuchen
-                for(char c : alphabet) {
-                    alphabetList.add(c);
-                }
                 //startet Programm
                 start();
             }
@@ -199,7 +192,7 @@ import java.util.Random;
             }
             static void vigenereChiffrieren(){
                 char[] klarTextArray;
-                char[] passwort;
+                char[] tempPasswortArr;
                 char[] passwortArray;
                 String oneTimePadAuswahl;
 
@@ -211,21 +204,26 @@ import java.util.Random;
                     klarTextArray = StringZuArrayInput();
                     char[] chiffreArray = new char[klarTextArray.length];
                     System.out.println("mit welchem Passwort wollen sie den Text verschlüsseln?");
-                    passwort = StringZuArrayInput();
-                    if(passwort.length >= klarTextArray.length){
-                        passwortArray = passwort;
+                    tempPasswortArr = StringZuArrayInput();
+                    if(tempPasswortArr.length >= klarTextArray.length){
+                        passwortArray = tempPasswortArr;
                     }
                     else{
                         passwortArray = new char[klarTextArray.length];
                         for (int i = 0; i < klarTextArray.length; i++) {
-                            passwortArray[i] = passwort[i % passwort.length];
+                            passwortArray[i] = tempPasswortArr[i % tempPasswortArr.length];
                         }
                     }
-                    System.out.println(passwortArray);
                     for (int i = 0; i < klarTextArray.length; i++) {
-                        int klarTextBuchstabeIndexInAlphabet = alphabetList.indexOf(klarTextArray[i]);
-                        int passwortBuchstabeIndexInAlphabet = alphabetList.indexOf(passwortArray[i]);
-                        chiffreArray[i] = alphabetList.get((klarTextBuchstabeIndexInAlphabet + passwortBuchstabeIndexInAlphabet) % alphabetList.size());
+                        if (indexInAlphabet(klarTextArray[i]) != alphabet.length+1){
+                            int klarTextIndex = indexInAlphabet(klarTextArray[i]);
+                            int passwortIndex = indexInAlphabet(passwortArray[i]);
+                            chiffreArray[i] = alphabet[((klarTextIndex + passwortIndex) % alphabet.length)];
+                        }
+                        else {
+                            chiffreArray[i] = klarTextArray[i];
+                        }
+
                     }
                     System.out.println(chiffreArray);
                 }
@@ -240,15 +238,20 @@ import java.util.Random;
                         char c = alphabet[j];
                         oneTimePadArr[i] = c;
                     }
-                    System.out.println("one-time-pad:");
+                    System.out.print("one-time-pad: ");
                     System.out.println(oneTimePadArr);
 
                     for (int i = 0; i < klarTextArray.length; i++) {
-                        int klarTextBuchstabeIndexInAlphabet = alphabetList.indexOf(klarTextArray[i]);
-                        int passwortBuchstabeIndexInAlphabet = alphabetList.indexOf(oneTimePadArr[i]);
-                        chiffreArray[i] = alphabetList.get((klarTextBuchstabeIndexInAlphabet + passwortBuchstabeIndexInAlphabet) % alphabetList.size());
+                        if (indexInAlphabet(klarTextArray[i]) != alphabet.length+1){
+                            int klarTextIndex = indexInAlphabet(klarTextArray[i]);
+                            int oneTimePadIndex = indexInAlphabet(oneTimePadArr[i]);
+                            chiffreArray[i] = alphabet[((klarTextIndex + oneTimePadIndex) % alphabet.length)];
+                        }
+                        else {
+                            chiffreArray[i] = klarTextArray[i];
+                        }
                     }
-                    System.out.println("chiffre:");
+                    System.out.print("chiffre: ");
                     System.out.println(chiffreArray);
                 }
 
@@ -275,9 +278,14 @@ import java.util.Random;
                 }
                 System.out.println(passwortArray);
                 for (int i = 0; i < klarTextArray.length; i++) {
-                    int chiffreBuchstabeIndexInAlphabet = alphabetList.indexOf(chiffreArray[i]);
-                    int passwortBuchstabeIndexInAlphabet = alphabetList.indexOf(passwortArray[i]);
-                    klarTextArray[i] = alphabetList.get(((chiffreBuchstabeIndexInAlphabet - passwortBuchstabeIndexInAlphabet)+alphabetList.size()) % alphabetList.size());
+                    if (indexInAlphabet(chiffreArray[i]) != alphabet.length+1){
+                        int chiffreIndex = indexInAlphabet(chiffreArray[i]);
+                        int passwortIndex = indexInAlphabet(passwortArray[i]);
+                        klarTextArray[i] = alphabet[(((chiffreIndex - passwortIndex)+alphabet.length) % alphabet.length)];
+                    }
+                    else {
+                        klarTextArray[i] = chiffreArray[i];
+                    }
                 }
                 System.out.println(klarTextArray);
             }
