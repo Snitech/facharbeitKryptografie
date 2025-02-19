@@ -1,4 +1,3 @@
-import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.nio.charset.Charset;
 import java.util.Scanner;
@@ -51,10 +50,7 @@ import java.util.Random;
             }
 
             static char[] StringZuArrayInput() {        //fragt nach String input und wandelt in char array um
-                String klarText = StringScanner.nextLine().toLowerCase();
-                if (klarText.contains(" ")) {
-                    System.out.println("alle Leerzeichen wurden entfernt");
-                }
+                String klarText = StringScanner.nextLine().toLowerCase().replaceAll("\\s", "");
                 return klarText.toCharArray();
             }
 
@@ -65,6 +61,15 @@ import java.util.Random;
                     }
                 }
                 return alphabet.length + 1;
+            }
+
+            static int indexInMorse(String s){
+                for (int i = 0; i< morseCode.length; i++){
+                    if (s.equals(morseCode[i])){
+                        return i;
+                    }
+                }
+                return morseCode.length + 1;
             }
 
             static void caesarStart() {
@@ -154,6 +159,7 @@ import java.util.Random;
                 chiffreArr = StringZuArrayInput();
                 char[] klarTextArr = new char[chiffreArr.length];
                 System.out.println();
+                long start = System.currentTimeMillis();
                 for (int i = 0; i < alphabet.length; i++) {
                     for (int j = 0; j < chiffreArr.length; j++) {
                         int chiffreIndex = indexInAlphabet(chiffreArr[j]);
@@ -170,8 +176,9 @@ import java.util.Random;
                     }
                     System.out.println(i + ". " + new String(klarTextArr));
                 }
-
-
+                long ende = System.currentTimeMillis();
+                long vergangen = ende - start;
+                System.out.println(vergangen);
             }
 
             static void vigenereStart() {
@@ -395,10 +402,10 @@ import java.util.Random;
                 String aktion = StringScanner.nextLine();
                 switch (aktion) {
                     case "v":
-                        TextZuMorse();
+                        textZuMorse();
                         break;
                     case "e":
-                        caeserdechiffrieren();
+                        morseZuText();
                         break;
                     default:
                         System.out.println("gibt's nicht");
@@ -407,7 +414,7 @@ import java.util.Random;
                 start();
 
             }
-            static void TextZuMorse(){
+            static void textZuMorse(){
                 char[] klarTextArr;
                 System.out.println("geben sie den zu verschlüsselnden Text ein (nicht alphabetische Zeichen werden durch # ersetzt)");
                 klarTextArr = StringZuArrayInput();
@@ -423,7 +430,22 @@ import java.util.Random;
                 }
 
             }
-            static void MorseZuText(){
+            static void morseZuText(){
+                String[] morseArr;
+                System.out.println("geben sie den zu entschlüsselnden Text ein");
+                String morseString = StringScanner.nextLine();
+                morseArr = morseString.split(" ");
+                char[] klarTextArr = new char[morseArr.length];
+                //morseArr = StringScanner.nextLine();
+                for (int i = 0; i < morseArr.length; i++){
+                    System.out.println(morseArr[i]);
+                    for (int j = 0; j <morseCode.length; j++) {
+                        if (morseArr[i].equals(morseCode[j])) {
+                            klarTextArr[i] = alphabet[j];
+                        }
+                    }
+                }
+                System.out.println(klarTextArr);
 
             }
         }
