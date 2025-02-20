@@ -426,7 +426,7 @@ import java.util.Random;
                     else {
                         morseArr[i] = "#";
                     }
-                    System.out.print(morseArr[i]+" ");
+                    System.out.println(morseArr[i]+" ");
                 }
 
             }
@@ -438,14 +438,14 @@ import java.util.Random;
                 char[] klarTextArr = new char[morseArr.length];
                 //morseArr = StringScanner.nextLine();
                 for (int i = 0; i < morseArr.length; i++){
-                    System.out.println(morseArr[i]);
-                    for (int j = 0; j <morseCode.length; j++) {
-                        if (morseArr[i].equals(morseCode[j])) {
-                            klarTextArr[i] = alphabet[j];
-                        }
+                    int morseIndex = indexInMorse(morseArr[i]);
+                    if (morseIndex!= morseCode.length+1){
+                        klarTextArr[i] = alphabet[indexInMorse(morseArr[i])];
+                    }
+                    else {
+                        klarTextArr[i] = '#';
                     }
                 }
                 System.out.println(klarTextArr);
-
             }
         }
