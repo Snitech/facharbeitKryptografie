@@ -6,7 +6,6 @@ import java.util.Random;
         public class Main {
             static Scanner StringScanner = new Scanner(System.in);
             static Scanner intScanner = new Scanner(System.in);
-            static Scanner longScanner = new Scanner(System.in);
             static Scanner doubleScanner = new Scanner(System.in);
             public static char[] alphabet = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z'};
             public static String[] morseCode = {".-","-...","-.-.","-..",".","..-.","--.","....","..",".---","-.-",".-..","--","-.","---",".--.","--.-",".-.","...","-","..-","...-",".--","-..-","-.--","--.."};
@@ -18,7 +17,7 @@ import java.util.Random;
 
             static void start() {
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
-                System.out.println("was würden sie gerne tun?\n c=cäsar\n v=Vigenere \n b=bit-Verschlüsselung\n d=diffe-hellmann\n m=morse code\n\n x=Programm beenden\n");
+                System.out.println("was würden sie gerne tun?\n c=cäsar\n v=Vigenere \n b=bit-Verschlüsselung\n d=diffe-hellmann\n r=rsa\n m=morse code\n\n x=Programm beenden\n");
                 String verschluesselungWahl = StringScanner.nextLine(); //input fuer Aktion
                 switch (verschluesselungWahl) {
                     case "c":
@@ -34,13 +33,17 @@ import java.util.Random;
                         diffieHellmann();
                         break;
                     case "m":
-                        morseCode();
+                        morseStart();
                         break;
                     case "x":
                         StringScanner.close();
                         intScanner.close();
+                        doubleScanner.close();
                         System.out.print("Programm erfolgreich beendet");
                         System.exit(0);
+                    case "r":
+                        rsaStart();
+                        break;
                     default://wenn die Eingabe nicht mit einer Option uebereinstimmt
                         start();
                         System.out.println("bitte geben sie eine gültige Eingabe ein");
@@ -53,7 +56,6 @@ import java.util.Random;
                 String klarText = StringScanner.nextLine().toLowerCase().replaceAll("\\s", "");
                 return klarText.toCharArray();
             }
-
             static int indexInAlphabet(char c) {
                 for (int i = 0; i < alphabet.length; i++) {
                     if (c == alphabet[i]) {
@@ -62,7 +64,6 @@ import java.util.Random;
                 }
                 return alphabet.length + 1;
             }
-
             static int indexInMorse(String s){
                 for (int i = 0; i< morseCode.length; i++){
                     if (s.equals(morseCode[i])){
@@ -70,6 +71,23 @@ import java.util.Random;
                     }
                 }
                 return morseCode.length + 1;
+            }
+            static boolean istPrimzahl(int x) {
+                if (x <= 1)
+                    return false;
+                for (int i = 2; i < x; i++)
+                    if (x % i == 0)
+                        return false;
+
+                return true;
+            }
+            static int ggT(int x, int y){
+                if (y == 0){
+                    return x;
+                }
+                else{
+                    return ggT(y, x%y);
+                }
             }
 
             static void caesarStart() {
@@ -96,7 +114,6 @@ import java.util.Random;
                 System.out.print("\n");
                 caesarStart();
             }
-
             static void caeserchiffrieren() {
                 //legt variablen fest
                 char[] klarTextArray;
@@ -121,7 +138,6 @@ import java.util.Random;
                 }
                 System.out.println(chiffreArr);
             }
-
             static void caeserdechiffrieren() {
                 //legt variablen fest
                 char[] chiffreArr;
@@ -151,7 +167,6 @@ import java.util.Random;
                 System.out.println(klarTextArr);
 
             }
-
             static void bruteForce() {
                 //legt variablen fest
                 char[] chiffreArr;
@@ -203,7 +218,6 @@ import java.util.Random;
                 System.out.print("\n");
                 vigenereStart();
             }
-
             static void vigenereChiffrieren() {
                 char[] klarTextArray;
                 char[] tempPasswortArr;
@@ -267,7 +281,6 @@ import java.util.Random;
 
 
             }
-
             static void vigenereDechiffrieren() {
                 char[] chiffreArray;
                 char[] passwort;
@@ -317,7 +330,6 @@ import java.util.Random;
                 System.out.print("\n");
                 bitStart();
             }
-
             static void bitChiffrieren() {
                 Charset charset = null;
                 System.out.println("welchen Zeichensatz würden sie gerne verwenden?\n u=UTF-8 \n a=ASCII\n i=ISO 8859-1\n\n x=Programm beenden\n");
@@ -396,7 +408,7 @@ import java.util.Random;
                 start();
             }
 
-            static void morseCode() {
+            static void morseStart() {
                 //Abfrage nach gewuenscher Aktion(caesar Verschluesselung)
                 System.out.println("was würden sie gerne tun?\n v=verschlüsseln\n e=entschlüsseln\n\n x=Programm beenden\n");
                 String aktion = StringScanner.nextLine();
@@ -448,4 +460,104 @@ import java.util.Random;
                 }
                 System.out.println(klarTextArr);
             }
+
+            static void affineStart(){}
+            static void affineChiffrieren(){}
+            static void affineDechiffrieren(){}
+
+            static void desStart(){}
+            static void desChiffrieren(){}
+            static void desDechiffrieren(){}
+            
+            static void rsaStart(){
+                System.out.println("RSA-Verschlüsselung");
+                System.out.println("was würden sie gerne tun?\n v=verschlüsseln\n e=entschlüsseln \n\n x=Programm beenden\n");
+                String aktion = StringScanner.nextLine();
+                switch (aktion) {
+                    case "v":
+                        rsaChiffrieren();
+                        break;
+                    case "e":
+                        rsaDechiffrieren();
+                        break;
+                    case "x":
+                        start();
+                    default:
+                        System.out.println("bitte geben sie eine gültige Eingabe ein");
+                        break;
+                }
+                //startet Abfrage neu
+                System.out.print("\n");
+                rsaStart();
+            }
+            static void rsaChiffrieren(){
+                int p;
+                int q;
+
+                do {
+                    System.out.print("geben sie den Wert für p ein: p=");
+                    p = intScanner.nextInt();
+                }
+                while (!istPrimzahl(p));
+                do{
+                    System.out.print("geben sie den Wert für q ein: q=");
+                    q = intScanner.nextInt();
+                }
+                while (!istPrimzahl(q));
+
+                int N = p*q;
+                int e;
+                int pN = (p-1)*(q-1);
+
+                do {
+                    System.out.print("geben sie den Wert für e ein: e=");
+                    e = intScanner.nextInt();
+                }
+                while(ggT(e,pN) > 1 && e < pN-1);
+
+                System.out.println("N und e ("+N+", "+e+") sind ihr öffentlicher Schlüssel");
+
+                System.out.println("geben sie den zu verschlüsselnden Text ein");
+                String M = StringScanner.nextLine();
+                byte[] klarTextByteArr = M.getBytes();
+                byte[] chiffreByteArr = new byte[klarTextByteArr.length];
+                for (int i = 0; i<klarTextByteArr.length; i++){
+                    //System.out.println(klarTextByteArr[i]);
+                    double MDouble = klarTextByteArr[i];
+                    double CDouble = Math.pow(MDouble, e) %N;
+                    chiffreByteArr[i] = (byte)CDouble;
+                    //System.out.println(CDouble);
+                }
+                System.out.println(new String(chiffreByteArr, StandardCharsets.US_ASCII));
+            }
+            static void rsaDechiffrieren(){
+                int p;
+                int q;
+
+                do {
+                    System.out.print("geben sie den Wert für p ein: p=");
+                    p = intScanner.nextInt();
+                }
+                while (!istPrimzahl(p));
+                do{
+                    System.out.print("geben sie den Wert für q ein: q=");
+                    q = intScanner.nextInt();
+                }
+                while (!istPrimzahl(q));
+
+                int N = p*q;
+                int e;
+                int pN = (p-1)*(q-1);
+
+                do {
+                    System.out.print("geben sie den Wert für e ein: e=");
+                    e = intScanner.nextInt();
+                }
+                while(ggT(e,pN) > 1 && e < pN-1);
+                int d = 0;
+                while (d*e!= 1%pN){
+                    d+=1;
+                }
+            }
+
         }
